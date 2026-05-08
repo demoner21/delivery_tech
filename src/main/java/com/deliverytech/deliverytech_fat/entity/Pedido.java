@@ -6,7 +6,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import enums.StatusPedido;
+
+import com.deliverytech.deliverytech_fat.enums.StatusPedido;
 
 @Entity
 @Data
