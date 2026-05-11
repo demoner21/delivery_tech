@@ -2,6 +2,8 @@ package com.deliverytech.deliverytech_fat.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -16,6 +18,9 @@ public class Restaurante {
     private String endereco;
     private String categoria;
     private boolean ativo;
+    private Integer avaliacao;
+
+    private BigDecimal taxaEntrega;
 
    @OneToMany(mappedBy = "restaurante")
    private List<Pedido>pedidos;
