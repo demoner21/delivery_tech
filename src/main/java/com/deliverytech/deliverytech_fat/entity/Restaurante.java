@@ -23,7 +23,7 @@ public class Restaurante {
     private BigDecimal taxaEntrega;
 
    @OneToMany(mappedBy = "restaurante")
-   private List<Pedido>pedidos;
+   private List<Pedido> pedidos;
 
    @OneToMany(mappedBy = "restaurante")
    private List<Pedido> produtos;
