@@ -1,9 +1,11 @@
 package com.deliverytech.deliverytech_fat.dto.req;
 
 import jakarta.validation.constraints.*;
+import lombok.Data;
 import java.math.BigDecimal;
 
 
+@Data
 public class ProdutoReqDTO {
     @NotBlank(message = "Nome é obrigatório")
     @Size(min = 2, max = 50, message = "Nome deve ter entre 2 e 50 caracteres")
