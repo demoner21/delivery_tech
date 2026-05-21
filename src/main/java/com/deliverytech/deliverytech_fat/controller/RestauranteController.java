@@ -7,12 +7,14 @@ import com.deliverytech.deliverytech_fat.dto.res.ProdutoResDTO;
 import com.deliverytech.deliverytech_fat.dto.res.RestauranteResDTO;
 import com.deliverytech.deliverytech_fat.service.ProdutoService;
 import com.deliverytech.deliverytech_fat.service.RestauranteService;
+import com.deliverytech.deliverytech_fat.validation.ValidCEP;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restaurantes")
 @CrossOrigin(origins = "*")
+@Validated
 @Tag(name = "Restaurantes", description = "Operações relacionadas aos restaurantes")
 public class RestauranteController {
 
@@ -181,7 +184,7 @@ public class RestauranteController {
     })
     public ResponseEntity<ApiResponseWrapper<List<RestauranteResDTO>>> buscarProximos(
             @Parameter(description = "CEP de referência")
-            @PathVariable String cep,
+            @PathVariable @ValidCEP String cep,
             @Parameter(description = "Raio em km")
             @RequestParam(defaultValue = "10") Integer raio) {
 
