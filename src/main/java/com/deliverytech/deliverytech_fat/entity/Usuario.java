@@ -1,5 +1,6 @@
 package com.deliverytech.deliverytech_fat.entity;
 
+import com.deliverytech.deliverytech_fat.enums.Role;  // <-- adicionar
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
