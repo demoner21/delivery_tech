@@ -26,7 +26,12 @@ jobs:
       run: docker build -t minha-api .
 
     - name: Run Docker container
-      run: docker run -d -p 8080:8080 minha-api
+      run: |
+        docker run -d \
+          -p 8080:8080 \
+          -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+          -e JWT_EXPIRATION="${{ secrets.JWT_EXPIRATION }}" \
+          minha-api
 
     - name: Test application health
       run: |
