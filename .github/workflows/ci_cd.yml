@@ -29,4 +29,7 @@ jobs:
       run: docker run -d -p 8080:8080 minha-api
 
     - name: Test application health
-      run: curl -f http://localhost:8080/actuator/health || exit 1
+      run: |
+        echo "Aguardando a API ficar online (Health Check)..."
+        timeout 40 bash -c 'until curl -f -s http://localhost:8080/actuator/health > /dev/null; do echo "Aguardando..."; sleep 2; done'
+        echo "API inicializada com sucesso!"
