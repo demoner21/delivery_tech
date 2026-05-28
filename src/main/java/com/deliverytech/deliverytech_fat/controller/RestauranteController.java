@@ -7,6 +7,7 @@ import com.deliverytech.deliverytech_fat.dto.res.ProdutoResDTO;
 import com.deliverytech.deliverytech_fat.dto.res.RestauranteResDTO;
 import com.deliverytech.deliverytech_fat.service.ProdutoService;
 import com.deliverytech.deliverytech_fat.service.RestauranteService;
+import com.deliverytech.deliverytech_fat.service.MetricsService;
 import com.deliverytech.deliverytech_fat.validation.ValidCEP;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,6 +38,9 @@ public class RestauranteController {
     @Autowired
     private ProdutoService produtoService;
 
+    @Autowired
+    private MetricsService metricsService;
+
     @PostMapping
     @Operation(summary = "Cadastrar restaurante",
                description = "Cria um novo restaurante no sistema")
@@ -51,11 +55,19 @@ public class RestauranteController {
                 description = "Dados do restaurante a ser criado"
             ) RestauranteReqDTO dto) {
 
-        RestauranteResDTO restaurante = restauranteService.cadastrarRestaurante(dto);
-        ApiResponseWrapper<RestauranteResDTO> response =
-            new ApiResponseWrapper<>(true, restaurante, "Restaurante criado com sucesso");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        metricsService.incrementarPedidosProcessados(); // Exemplo de métrica incrementada no cadastro
+        try {
+            RestauranteResDTO restaurante = restauranteService.cadastrarRestaurante(dto);
+            ApiResponseWrapper<RestauranteResDTO> response =
+                new ApiResponseWrapper<>(true, restaurante, "Restaurante criado com sucesso");
+
+            metricsService.incrementarPedidosComSucesso(); // Incrementa métrica de sucesso após criação bem-sucedida
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            metricsService.incrementarPedidosComErro(); // Incrementa métrica de erro em caso de falha
+            throw e; // Re-throw para que o erro seja tratado pelo handler global
+        }
     }
 
     @GetMapping
